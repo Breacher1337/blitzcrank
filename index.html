@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BlitzCrank — Gaming Gear & Electronics Store</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23c89b3c' d='M13 2 4 14h6l-1 8 9-12h-6l1-8z'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/fonts/fonts-local.css">
+<style>
+  :root{
+    --bg-0:#04060c;
+    --bg-1:#070b16;
+    --bg-2:#0b1120;
+    --bg-3:#0f1728;
+    --line:#1b2540;
+    --line-gold:rgba(200,155,60,.28);
+    --gold:#c89b3c;
+    --gold-bright:#e8c877;
+    --gold-pale:#f4e3b2;
+    --bronze:#8a6420;
+    --text:#e9e7de;
+    --muted:#8b93a9;
+    --red:#e05252;
+    --green:#4fc08d;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg-1);
+    color:var(--text);
+    font-family:'Rajdhani',sans-serif;
+    font-size:16px;
+    line-height:1.45;
+    background-image:
+      radial-gradient(1100px 500px at 75% -80px, rgba(200,155,60,.10), transparent 60%),
+      radial-gradient(900px 600px at -10% 30%, rgba(40,70,140,.12), transparent 60%),
+      radial-gradient(1000px 700px at 110% 75%, rgba(200,155,60,.05), transparent 60%);
+    background-attachment:fixed;
+  }
+  .wrap{max-width:1280px;margin:0 auto;padding:0 24px}
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit;cursor:pointer}
+  img{display:block}
+  .cinzel{font-family:'Cinzel',serif}
+
+  /* ---------- top bar ---------- */
+  .topbar{background:var(--bg-0);border-bottom:1px solid var(--line);font-size:13.5px;letter-spacing:.06em}
+  .topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:36px}
+  .topbar .ship{color:var(--gold-bright);font-weight:600;text-transform:uppercase}
+  .topbar .ship b{color:var(--gold-pale)}
+  .topbar .links{display:flex;gap:22px;color:var(--muted);font-weight:600;text-transform:uppercase}
+  .topbar .links a:hover{color:var(--gold-bright)}
+
+  /* ---------- header ---------- */
+  header.site{background:rgba(7,11,22,.92);border-bottom:1px solid var(--line-gold);position:sticky;top:0;z-index:50;backdrop-filter:blur(6px)}
+  .header-main{display:flex;align-items:center;gap:28px;height:76px}
+  .logo{display:flex;align-items:center;gap:12px}
+  .logo-badge{
+    width:44px;height:44px;border-radius:10px;display:grid;place-items:center;
+    background:linear-gradient(145deg,#2a2110,#0d0a05 60%);
+    border:1px solid var(--line-gold);
+    box-shadow:0 0 18px rgba(200,155,60,.35), inset 0 0 12px rgba(200,155,60,.25);
+  }
+  .logo-badge svg{width:26px;height:26px;fill:var(--gold-bright);filter:drop-shadow(0 0 6px rgba(232,200,119,.8))}
+  .logo-text{line-height:1}
+  .logo-text .name{font-family:'Cinzel',serif;font-weight:900;font-size:24px;letter-spacing:.08em;
+    background:linear-gradient(180deg,var(--gold-pale),var(--gold) 55%,var(--bronze));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .logo-text .tag{font-size:10.5px;letter-spacing:.42em;color:var(--muted);text-transform:uppercase;font-weight:600;margin-top:3px}
+  .search{flex:1;display:flex;max-width:520px;height:44px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--bg-2)}
+  .search:focus-within{border-color:var(--gold)}
+  .search input{flex:1;background:transparent;border:0;outline:0;color:var(--text);padding:0 16px;font-family:inherit;font-size:15px;font-weight:500}
+  .search input::placeholder{color:#5b6478}
+  .search button{width:52px;border:0;background:linear-gradient(180deg,var(--gold-bright),var(--gold));display:grid;place-items:center}
+  .search button svg{width:20px;height:20px;stroke:#1a1206;fill:none;stroke-width:2.4}
+  .header-actions{display:flex;gap:10px;margin-left:auto}
+  .hbtn{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 12px;border-radius:8px;border:1px solid transparent;color:var(--muted);background:transparent}
+  .hbtn:hover{color:var(--gold-bright);border-color:var(--line-gold);background:var(--bg-2)}
+  .hbtn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8}
+  .hbtn span{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+  .hbtn .count{position:absolute;top:0;right:4px;min-width:18px;height:18px;border-radius:9px;background:var(--gold);color:#1a1206;font-size:11px;font-weight:700;display:grid;place-items:center;padding:0 4px}
+
+  /* ---------- nav ---------- */
+  nav.mainnav{border-bottom:1px solid var(--line);background:var(--bg-0);overflow:hidden}
+  nav.mainnav .wrap{display:flex;align-items:stretch;gap:4px;height:48px}
+  .allcat{flex:none;align-self:center;display:flex;align-items:center;gap:10px;height:34px;padding:0 13px;margin-right:8px;border-radius:6px;border:1px solid var(--line-gold);
+    background:linear-gradient(180deg,rgba(200,155,60,.16),rgba(200,155,60,.05));color:var(--gold-bright);font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+  .allcat svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.2}
+  .navlinks{display:flex;align-items:stretch;gap:2px;flex-wrap:nowrap;overflow:hidden}
+  .navlinks a{flex:none;display:flex;align-items:center;white-space:nowrap;padding:0 10px;border-radius:6px;font-weight:600;font-size:14px;letter-spacing:.04em;text-transform:uppercase;color:#c6cbd9}
+  .navlinks a:hover{color:var(--gold-bright);background:var(--bg-2)}
+  .navlinks a.sale{color:var(--gold-pale);background:linear-gradient(180deg,rgba(200,155,60,.22),rgba(200,155,60,.08));border:1px solid var(--line-gold)}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+  .hero::before{
+    content:"";position:absolute;inset:0;
+    background-image:linear-gradient(rgba(200,155,60,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(200,155,60,.05) 1px,transparent 1px);
+    background-size:44px 44px;
+    mask-image:radial-gradient(700px 420px at 70% 40%,#000 30%,transparent 75%);
+  }
+  .hero .wrap{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding-top:56px;padding-bottom:56px}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border:1px solid var(--line-gold);border-radius:999px;
+    color:var(--gold-bright);font-size:12.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;background:rgba(200,155,60,.07)}
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--gold-bright);box-shadow:0 0 8px var(--gold-bright)}
+  .hero h1{font-family:'Cinzel',serif;font-weight:900;font-size:58px;line-height:1.06;margin:20px 0 16px;letter-spacing:.01em}
+  .hero h1 .grad{background:linear-gradient(180deg,var(--gold-pale) 10%,var(--gold) 55%,var(--bronze) 95%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 14px rgba(200,155,60,.25))}
+  .hero p.lead{color:var(--muted);font-size:18px;font-weight:500;max-width:480px}
+  .hero p.lead b{color:var(--text)}
+  .cta-row{display:flex;gap:14px;margin-top:28px}
+  .btn{display:inline-flex;align-items:center;gap:10px;height:50px;padding:0 26px;border-radius:8px;font-weight:700;font-size:15.5px;letter-spacing:.12em;text-transform:uppercase;border:1px solid transparent;white-space:nowrap}
+  .btn svg{width:18px;height:18px;fill:currentColor}
+  .btn-gold{background:linear-gradient(180deg,var(--gold-bright),var(--gold) 60%,#a67c2a);color:#1c1305;border-color:#f0d089;
+    box-shadow:0 6px 24px rgba(200,155,60,.35), inset 0 1px 0 rgba(255,255,255,.35)}
+  .btn-gold:hover{filter:brightness(1.08)}
+  .btn-ghost{background:transparent;color:var(--gold-bright);border-color:var(--line-gold)}
+  .btn-ghost:hover{background:rgba(200,155,60,.08)}
+  .hero-stats{display:flex;gap:36px;margin-top:36px}
+  .hero-stats .stat .num{font-family:'Cinzel',serif;font-weight:800;font-size:26px;color:var(--gold-pale)}
+  .hero-stats .stat .lbl{font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-top:2px}
+  .hero-visual{position:relative}
+  .hero-frame{position:relative;border-radius:16px;border:1px solid var(--line-gold);overflow:hidden;background:var(--bg-2);
+    box-shadow:0 0 0 1px rgba(0,0,0,.6), 0 24px 70px rgba(0,0,0,.6), 0 0 60px rgba(200,155,60,.12)}
+  .hero-frame img{width:100%;height:380px;object-fit:cover;object-position:center 62%}
+  .hero-frame::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,6,12,.05) 40%,rgba(4,6,12,.75));pointer-events:none}
+  .chip{position:absolute;display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:10px;font-weight:700;font-size:13.5px;letter-spacing:.08em;text-transform:uppercase;
+    background:rgba(9,13,26,.88);border:1px solid var(--line-gold);color:var(--gold-pale);backdrop-filter:blur(4px);box-shadow:0 8px 24px rgba(0,0,0,.5)}
+  .chip svg{width:16px;height:16px;fill:var(--gold-bright)}
+  .chip.c1{top:18px;left:-18px}
+  .chip.c2{bottom:64px;left:-30px;color:#ffd9d9;border-color:rgba(224,82,82,.5)}
+  .chip.c2 svg{fill:var(--red)}
+  .chip.c3{top:44px;right:-14px}
+  .hero-bolt{position:absolute;right:-60px;bottom:-90px;width:340px;height:340px;fill:rgba(200,155,60,.05);pointer-events:none}
+
+  /* ---------- categories ---------- */
+  .cats{padding:44px 0 8px}
+  .cat-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+  .cat{display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px 10px 16px;border-radius:12px;border:1px solid var(--line);background:var(--bg-2);text-align:center;transition:.15s}
+  .cat:hover{border-color:var(--line-gold);background:var(--bg-3);transform:translateY(-2px)}
+  .cat .ic{width:52px;height:52px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(145deg,rgba(200,155,60,.18),rgba(200,155,60,.04));border:1px solid var(--line-gold)}
+  .cat .ic svg{width:26px;height:26px;stroke:var(--gold-bright);fill:none;stroke-width:1.7}
+  .cat .nm{font-weight:700;font-size:15px;letter-spacing:.06em;text-transform:uppercase}
+  .cat .ct{font-size:12.5px;color:var(--muted);font-weight:600}
+
+  /* ---------- sale banner ---------- */
+  .sale{margin:36px 0 8px}
+  .sale-inner{position:relative;overflow:hidden;border-radius:16px;border:1px solid var(--line-gold);
+    background:linear-gradient(100deg,#171006 0%,#241a08 45%,#3a2a0c 100%);display:flex;align-items:center;gap:32px;padding:26px 36px}
+  .sale-inner::before{content:"";position:absolute;inset:0;background:radial-gradient(600px 200px at 85% 50%,rgba(232,200,119,.18),transparent 65%)}
+  .sale-title{font-family:'Cinzel',serif;font-weight:900;font-size:34px;letter-spacing:.04em;
+    background:linear-gradient(180deg,var(--gold-pale),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sale-sub{color:#cbb98a;font-weight:600;font-size:16px;letter-spacing:.04em}
+  .countdown{display:flex;align-items:center;gap:8px;margin-left:auto;position:relative}
+  .cd-box{width:64px;padding:8px 0 6px;text-align:center;border-radius:10px;background:rgba(4,6,12,.75);border:1px solid var(--line-gold)}
+  .cd-box .v{font-family:'Cinzel',serif;font-weight:800;font-size:24px;color:var(--gold-pale)}
+  .cd-box .l{font-size:10px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;font-weight:700}
+  .cd-sep{font-family:'Cinzel',serif;font-size:22px;color:var(--gold);font-weight:800}
+  .sale .btn{position:relative;margin-left:8px}
+
+  /* ---------- section headers ---------- */
+  .sec-head{display:flex;align-items:flex-end;justify-content:space-between;margin:44px 0 20px}
+  .sec-head h2{font-family:'Cinzel',serif;font-weight:800;font-size:30px;letter-spacing:.03em}
+  .sec-head h2 span{color:var(--gold)}
+  .sec-head .sub{color:var(--muted);font-weight:600;letter-spacing:.06em;margin-top:4px;text-transform:uppercase;font-size:13.5px}
+  .tabs{display:flex;gap:8px}
+  .tabs button{padding:8px 16px;border-radius:999px;border:1px solid var(--line);background:var(--bg-2);color:var(--muted);font-weight:700;font-size:13.5px;letter-spacing:.08em;text-transform:uppercase}
+  .tabs button.on{color:#1c1305;background:linear-gradient(180deg,var(--gold-bright),var(--gold));border-color:#f0d089}
+
+  /* ---------- product grid ---------- */
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .card{border:1px solid var(--line);border-radius:14px;background:var(--bg-2);overflow:hidden;display:flex;flex-direction:column;transition:.15s}
+  .card:hover{border-color:var(--line-gold);transform:translateY(-3px);box-shadow:0 14px 40px rgba(0,0,0,.5)}
+  .thumb{position:relative;aspect-ratio:4/3;background:#0d1424;overflow:hidden}
+  .thumb img{width:100%;height:100%;object-fit:cover;transition:.3s}
+  .card:hover .thumb img{transform:scale(1.05)}
+  .badge{position:absolute;top:10px;left:10px;padding:4px 10px;border-radius:6px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+  .badge.off{background:var(--red);color:#fff}
+  .badge.hot{background:linear-gradient(180deg,var(--gold-bright),var(--gold));color:#1c1305}
+  .badge.new{background:#2b3f6b;color:#cfe0ff}
+  .wish{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:8px;border:1px solid var(--line);background:rgba(7,11,22,.8);display:grid;place-items:center}
+  .wish svg{width:16px;height:16px;stroke:#c6cbd9;fill:none;stroke-width:2}
+  .wish:hover svg{stroke:var(--red);fill:var(--red)}
+  .card-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
+  .brand{font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+  .pname{font-size:16.5px;font-weight:600;line-height:1.25;min-height:41px}
+  .rating{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);font-weight:600}
+  .stars{color:var(--gold-bright);letter-spacing:1px;font-size:13px}
+  .price-row{display:flex;align-items:baseline;gap:10px;margin-top:auto;padding-top:6px}
+  .price{font-family:'Cinzel',serif;font-weight:800;font-size:21px;color:var(--gold-pale)}
+  .old{color:#6b7386;text-decoration:line-through;font-weight:600;font-size:14.5px}
+  .add{margin-top:10px;height:40px;border-radius:8px;border:1px solid var(--line-gold);background:rgba(200,155,60,.08);color:var(--gold-bright);
+    font-weight:700;font-size:14px;letter-spacing:.12em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px}
+  .add svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}
+  .add:hover{background:linear-gradient(180deg,var(--gold-bright),var(--gold));color:#1c1305}
+
+  /* ---------- promos ---------- */
+  .promos{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;margin-top:40px}
+  .promo{position:relative;overflow:hidden;border-radius:16px;border:1px solid var(--line-gold);background:linear-gradient(120deg,#0d1424,#0a0f1e 60%);display:flex;align-items:center;min-height:230px}
+  .promo .txt{padding:30px 34px;position:relative;z-index:2}
+  .promo .kicker{font-size:12.5px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
+  .promo h3{font-family:'Cinzel',serif;font-weight:800;font-size:27px;margin:8px 0 6px;line-height:1.15}
+  .promo p{color:var(--muted);font-weight:500;max-width:340px}
+  .promo .btn{margin-top:16px;height:44px;padding:0 20px;font-size:13.5px}
+  .promo .img{position:absolute;right:0;top:0;bottom:0;width:46%;display:flex;align-items:center;justify-content:center}
+  .promo .img img{max-height:100%;max-width:100%;object-fit:contain;filter:drop-shadow(0 18px 30px rgba(0,0,0,.6))}
+  .promo .img.cover img{width:100%;height:100%;object-fit:cover;filter:none}
+  .promo .img::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--bg-2) 0%,transparent 45%);z-index:1}
+  .promo .img.cover::before{background:linear-gradient(90deg,#0a0f1e 0%,transparent 55%)}
+
+  /* ---------- features ---------- */
+  .features{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin:44px 0 8px}
+  .feat{display:flex;gap:14px;align-items:center;padding:18px 20px;border:1px solid var(--line);border-radius:12px;background:var(--bg-2)}
+  .feat .ic{width:46px;height:46px;flex:none;border-radius:10px;display:grid;place-items:center;background:rgba(200,155,60,.1);border:1px solid var(--line-gold)}
+  .feat .ic svg{width:23px;height:23px;stroke:var(--gold-bright);fill:none;stroke-width:1.8}
+  .feat .t{font-weight:700;font-size:16px;letter-spacing:.05em;text-transform:uppercase}
+  .feat .d{color:var(--muted);font-size:13.5px;font-weight:600}
+
+  /* ---------- newsletter ---------- */
+  .news{margin:44px 0;border-radius:16px;border:1px solid var(--line-gold);padding:34px 40px;display:flex;align-items:center;gap:30px;
+    background:radial-gradient(700px 220px at 20% 50%,rgba(200,155,60,.12),transparent 60%),var(--bg-2)}
+  .news h3{font-family:'Cinzel',serif;font-weight:800;font-size:25px}
+  .news p{color:var(--muted);font-weight:500}
+  .news form{margin-left:auto;display:flex;height:48px;width:420px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--bg-0)}
+  .news input{flex:1;background:transparent;border:0;outline:0;color:var(--text);padding:0 16px;font-family:inherit;font-size:15px;font-weight:500}
+  .news button{border:0;padding:0 22px;background:linear-gradient(180deg,var(--gold-bright),var(--gold));color:#1c1305;font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:14px}
+
+  /* ---------- footer ---------- */
+  footer{background:var(--bg-0);border-top:1px solid var(--line-gold);margin-top:20px}
+  .foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.2fr;gap:36px;padding:44px 0 34px}
+  .foot-brand p{color:var(--muted);font-weight:500;margin-top:14px;max-width:300px}
+  .socials{display:flex;gap:10px;margin-top:18px}
+  .socials a{width:36px;height:36px;border-radius:8px;border:1px solid var(--line);display:grid;place-items:center;color:var(--muted)}
+  .socials a:hover{color:var(--gold-bright);border-color:var(--line-gold)}
+  .socials svg{width:17px;height:17px;fill:currentColor}
+  .foot-col h4{font-family:'Cinzel',serif;font-size:15px;font-weight:800;letter-spacing:.14em;color:var(--gold-pale);text-transform:uppercase;margin-bottom:16px}
+  .foot-col a{display:block;color:var(--muted);font-weight:600;padding:5px 0;font-size:15px}
+  .foot-col a:hover{color:var(--gold-bright)}
+  .foot-col .c{color:var(--muted);font-weight:600;padding:5px 0;font-size:15px}
+  .foot-bottom{border-top:1px solid var(--line);padding:18px 0;display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-weight:600;font-size:14px}
+  .pay{display:flex;gap:8px}
+  .pay span{padding:4px 12px;border:1px solid var(--line);border-radius:6px;font-size:12px;font-weight:700;letter-spacing:.08em;color:#c6cbd9;background:var(--bg-2)}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="wrap">
+    <div class="ship">Free shipping nationwide on orders over <b>₱3,000</b> &nbsp;•&nbsp; 1-Year warranty on all gear</div>
+    <div class="links"><a href="#">Track Order</a><a href="#">Help Center</a><a href="#">Store Locator</a><a href="#">₱ PHP | EN</a></div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="site">
+  <div class="wrap header-main">
+    <a class="logo" href="#">
+      <div class="logo-badge"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg></div>
+      <div class="logo-text">
+        <div class="name">BLITZCRANK</div>
+        <div class="tag">Gaming Gear Store</div>
+      </div>
+    </a>
+    <div class="search">
+      <input type="text" placeholder="Search laptops, GPUs, peripherals, consoles...">
+      <button aria-label="Search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+    </div>
+    <div class="header-actions">
+      <button class="hbtn"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg><span>Account</span></button>
+      <button class="hbtn"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.6-9.3-9A5.4 5.4 0 0 1 12 6.5 5.4 5.4 0 0 1 21.3 11c-2.3 4.4-9.3 9-9.3 9z"/></svg><span>Wishlist</span><i class="count">5</i></button>
+      <button class="hbtn"><svg viewBox="0 0 24 24"><path d="M3 4h2l2.6 12.5a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5-1.2L21 8H6"/><circle cx="10" cy="21" r="1.4"/><circle cx="17" cy="21" r="1.4"/></svg><span>Cart</span><i class="count">3</i></button>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="mainnav">
+  <div class="wrap">
+    <button class="allcat"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>All Categories</button>
+    <div class="navlinks">
+      <a href="#">Home</a><a href="#">Laptops</a><a href="#">Desktops</a><a href="#">Components</a><a href="#">Peripherals</a><a href="#">Consoles</a><a href="#">Chairs</a><a href="#" class="sale">Blitz Sale</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow"><span class="dot"></span>Season 2025 Drop • New Arrivals</span>
+      <h1>FORGE YOUR<br><span class="grad">ARSENAL.</span><br>STRIKE FIRST.</h1>
+      <p class="lead">Laptops, PC components, peripherals, consoles and full battlestations — <b>pro-grade gaming gear</b> at street prices, shipped anywhere in the Philippines.</p>
+      <div class="cta-row">
+        <button class="btn btn-gold"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg>Shop Now</button>
+        <button class="btn btn-ghost">View Blitz Deals</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="num">12K+</div><div class="lbl">Products</div></div>
+        <div class="stat"><div class="num">85K+</div><div class="lbl">Gamers Served</div></div>
+        <div class="stat"><div class="num">4.9 ★</div><div class="lbl">Avg. Rating</div></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-frame">
+        <img src="assets/img/hero_laptop.png" alt="ASUS ROG Strix Scar gaming laptop">
+      </div>
+      <div class="chip c1"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg>RTX 50-Series in stock</div>
+      <div class="chip c2"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg>Up to -40% Blitz Sale</div>
+      <div class="chip c3"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg>240Hz • 1ms panels</div>
+      <svg class="hero-bolt" viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="cats">
+  <div class="wrap">
+    <div class="cat-grid" id="catGrid"></div>
+  </div>
+</section>
+
+<!-- SALE BANNER -->
+<section class="sale">
+  <div class="wrap">
+    <div class="sale-inner">
+      <div>
+        <div class="sale-title">BLITZ SALE</div>
+        <div class="sale-sub">Up to 40% OFF gaming laptops, GPUs & peripherals — while stocks last.</div>
+      </div>
+      <div class="countdown">
+        <div class="cd-box"><div class="v">02</div><div class="l">Days</div></div><span class="cd-sep">:</span>
+        <div class="cd-box"><div class="v">14</div><div class="l">Hrs</div></div><span class="cd-sep">:</span>
+        <div class="cd-box"><div class="v">37</div><div class="l">Min</div></div><span class="cd-sep">:</span>
+        <div class="cd-box"><div class="v">09</div><div class="l">Sec</div></div>
+      </div>
+      <button class="btn btn-gold">Shop the Sale</button>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED PRODUCTS -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <h2>FEATURED <span>GEAR</span></h2>
+        <div class="sub">Hand-picked hardware this week</div>
+      </div>
+      <div class="tabs">
+        <button class="on">All</button><button>Laptops</button><button>Components</button><button>Peripherals</button><button>Consoles</button>
+      </div>
+    </div>
+    <div class="grid" id="productGrid"></div>
+  </div>
+</section>
+
+<!-- PROMOS -->
+<section>
+  <div class="wrap promos">
+    <div class="promo">
+      <div class="txt">
+        <div class="kicker">Consoles & Games</div>
+        <h3>PS5 Slim + DualSense Bundle</h3>
+        <p>Next-gen 4K gaming with haptic feedback. Bundle price ₱36,995 — save ₱3,000.</p>
+        <button class="btn btn-gold">Shop Consoles</button>
+      </div>
+      <div class="img"><img src="assets/img/promo_ps5.png" alt="PlayStation 5 Slim with DualSense"></div>
+    </div>
+    <div class="promo">
+      <div class="txt">
+        <div class="kicker">Pro Controllers</div>
+        <h3>From ₱2,995</h3>
+        <p>DualSense, Xbox & fight sticks.</p>
+        <button class="btn btn-ghost">Shop Controllers</button>
+      </div>
+      <div class="img cover"><img src="assets/img/tile_controller.jpg" alt="DualSense controller"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section>
+  <div class="wrap features">
+    <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 7h11v8H3zM14 10h4l3 3v2h-7z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg></div><div><div class="t">Free Shipping</div><div class="d">On orders over ₱3,000</div></div></div>
+    <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 8.4 7 10 4-1.6 7-5.5 7-10V6z"/><path d="m9 12 2 2 4-4"/></svg></div><div><div class="t">1-Year Warranty</div><div class="d">On every product sold</div></div></div>
+    <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div><div><div class="t">Secure Checkout</div><div class="d">GCash, Maya, cards, COD</div></div></div>
+    <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 13a8 8 0 0 1 16 0"/><rect x="3" y="13" width="4" height="6" rx="1.5"/><rect x="17" y="13" width="4" height="6" rx="1.5"/><path d="M19 19a3 3 0 0 1-3 3h-3"/></svg></div><div><div class="t">24/7 Support</div><div class="d">Real humans, fast replies</div></div></div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section>
+  <div class="wrap">
+    <div class="news">
+      <div>
+        <h3>JOIN THE CRANK CREW</h3>
+        <p>Get early access to drops, restocks and members-only Blitz deals.</p>
+      </div>
+      <form onsubmit="return false">
+        <input type="email" placeholder="Enter your email address">
+        <button>Subscribe</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap foot-grid">
+    <div class="foot-brand">
+      <a class="logo" href="#">
+        <div class="logo-badge"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg></div>
+        <div class="logo-text"><div class="name">BLITZCRANK</div><div class="tag">Gaming Gear Store</div></div>
+      </a>
+      <p>The Philippines' home for laptops, electronics and pro gaming hardware. Built by gamers, for gamers.</p>
+      <div class="socials">
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8.5A.5.5 0 0 1 14 8z"/></svg></a>
+        <a href="#" aria-label="X"><svg viewBox="0 0 24 24"><path d="M4 4l7.2 9.3L4.4 20h2.5l5.4-5.4L16.8 20H20l-7.5-9.7L18.9 4h-2.5l-4.8 4.9L8.2 4z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 8.5A3.5 3.5 0 1 0 12 15.5 3.5 3.5 0 0 0 12 8.5zm0-2A5.5 5.5 0 1 1 12 17.5 5.5 5.5 0 0 1 12 6.5zM17.8 4.2a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4zM12 4c-2.2 0-2.5 0-3.3.05a5 5 0 0 0-1.7.3 3.4 3.4 0 0 0-2 2 5 5 0 0 0-.3 1.7C4.6 9.5 4.6 9.8 4.6 12s0 2.5.05 3.3a5 5 0 0 0 .3 1.7 3.4 3.4 0 0 0 2 2 5 5 0 0 0 1.7.3c.8.05 1.1.05 3.3.05s2.5 0 3.3-.05a5 5 0 0 0 1.7-.3 3.4 3.4 0 0 0 2-2 5 5 0 0 0 .3-1.7c.05-.8.05-1.1.05-3.3s0-2.5-.05-3.3a5 5 0 0 0-.3-1.7 3.4 3.4 0 0 0-2-2 5 5 0 0 0-1.7-.3C14.5 4 14.2 4 12 4z"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M21.6 7.2a2.6 2.6 0 0 0-1.8-1.9C18.2 5 12 5 12 5s-6.2 0-7.8.3A2.6 2.6 0 0 0 2.4 7.2 27 27 0 0 0 2 12a27 27 0 0 0 .4 4.8 2.6 2.6 0 0 0 1.8 1.9c1.6.3 7.8.3 7.8.3s6.2 0 7.8-.3a2.6 2.6 0 0 0 1.8-1.9A27 27 0 0 0 22 12a27 27 0 0 0-.4-4.8zM10 15V9l5.2 3z"/></svg></a>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h4>Shop</h4>
+      <a href="#">Gaming Laptops</a><a href="#">Desktops & PCs</a><a href="#">PC Components</a><a href="#">Peripherals</a><a href="#">Consoles & Games</a><a href="#">Chairs & Desks</a><a href="#">Blitz Sale</a>
+    </div>
+    <div class="foot-col">
+      <h4>Support</h4>
+      <a href="#">Track Your Order</a><a href="#">Shipping & Delivery</a><a href="#">Returns & Warranty</a><a href="#">Payment Options</a><a href="#">Help Center</a><a href="#">Contact Us</a>
+    </div>
+    <div class="foot-col">
+      <h4>Contact</h4>
+      <div class="c">BlitzCrank HQ, 1234 Gil Puyat Ave,<br>Makati City, Metro Manila</div>
+      <div class="c">Hotline: (02) 8123-4567 • 0917-123-4567</div>
+      <div class="c">support@blitzcrank.ph</div>
+      <div class="c">Open daily, 10:00 AM – 9:00 PM</div>
+    </div>
+  </div>
+  <div class="wrap foot-bottom">
+    <div>© 2026 BlitzCrank Gaming Gear Store. All rights reserved.</div>
+    <div class="pay"><span>VISA</span><span>MASTERCARD</span><span>GCASH</span><span>MAYA</span><span>COD</span></div>
+  </div>
+</footer>
+
+<script>
+/* ---------- static data ---------- */
+const CATEGORIES = [
+  { name:'Laptops',        count:'1,240 items', icon:'<rect x="3" y="5" width="18" height="11" rx="1.5"/><path d="M2 19h20"/>' },
+  { name:'Desktops',       count:'860 items',   icon:'<rect x="6" y="3" width="12" height="18" rx="1.5"/><path d="M9 7h6M9 10h6M10 17.5h4"/>' },
+  { name:'Components',     count:'2,310 items', icon:'<rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>' },
+  { name:'Peripherals',    count:'1,980 items', icon:'<rect x="2" y="8" width="14" height="8" rx="1.5"/><path d="M6 8V6a2 2 0 0 1 4 0v2M20 10v4a4 4 0 0 1-4 4h-1"/>' },
+  { name:'Consoles',       count:'540 items',   icon:'<path d="M7 8h10a5 5 0 0 1 5 5c0 2.5-2 4-4 4-1.5 0-2.5-.8-3-2h-6c-.5 1.2-1.5 2-3 2-2 0-4-1.5-4-4a5 5 0 0 1 5-5z"/><path d="M8 11v3M6.5 12.5h3M15.5 11.5h.01M17.5 13.5h.01"/>' },
+  { name:'Chairs & Desks', count:'320 items',   icon:'<path d="M6 3v9a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V3"/><path d="M6 12h12M12 15v3M8 21l4-3 4 3"/>' },
+];
+
+const PRODUCTS = [
+  { brand:'ASUS ROG',   name:'ROG Strix Scar 16 (2025) — RTX 5080, 240Hz OLED', price:'₱149,995', old:'₱169,995', off:'-12%', badge:'hot',  rating:4.9, reviews:312, img:'assets/img/tile_laptop_rog.jpg' },
+  { brand:'MSI',        name:'Katana 15 Gaming Laptop — RTX 5060, 15.6" 144Hz',  price:'₱54,995',  old:'₱62,995',  off:'-13%', badge:'off',  rating:4.7, reviews:188, img:'assets/img/tile_laptop_msi.jpg' },
+  { brand:'PNY',        name:'GeForce RTX 5060 Ti 16GB Dual Fan Graphics Card',  price:'₱32,995',  old:null,       off:null,   badge:'hot',  rating:4.8, reviews:96,  img:'assets/img/tile_gpu.jpg' },
+  { brand:'AMD',        name:'Ryzen 9 7900X 12-Core AM5 Processor',              price:'₱24,995',  old:'₱28,995',  off:'-14%', badge:'off',  rating:4.9, reviews:240, img:'assets/img/tile_cpu.jpg' },
+  { brand:'Razer',      name:'BlackWidow V4 Pro — Green Switch, Full RGB',       price:'₱11,995',  old:null,       off:null,   badge:'new',  rating:4.8, reviews:154, img:'assets/img/tile_keyboard.jpg' },
+  { brand:'Logitech G', name:'G903 Lightspeed Wireless Gaming Mouse',            price:'₱5,495',   old:'₱6,495',   off:'-15%', badge:'off',  rating:4.7, reviews:421, img:'assets/img/tile_mouse.jpg' },
+  { brand:'Razer',      name:'Kraken V4 Pro Wireless Headset — THX Spatial',     price:'₱9,995',   old:null,       off:null,   badge:'new',  rating:4.6, reviews:87,  img:'assets/img/tile_headset.jpg' },
+  { brand:'ASUS ROG',   name:'Strix XG32VQR 32" Curved 165Hz QHD Monitor',       price:'₱21,995',  old:'₱25,995',  off:'-15%', badge:'off',  rating:4.8, reviews:133, img:'assets/img/tile_monitor.jpg' },
+];
+
+const starStr = r => '★★★★★'.slice(0, Math.round(r)) + '☆☆☆☆☆'.slice(0, 5 - Math.round(r));
+
+document.getElementById('catGrid').innerHTML = CATEGORIES.map(c => `
+  <a class="cat" href="#">
+    <div class="ic"><svg viewBox="0 0 24 24">${c.icon}</svg></div>
+    <div class="nm">${c.name}</div>
+    <div class="ct">${c.count}</div>
+  </a>`).join('');
+
+document.getElementById('productGrid').innerHTML = PRODUCTS.map(p => `
+  <div class="card">
+    <div class="thumb">
+      <img src="${p.img}" alt="${p.name}">
+      <span class="badge ${p.badge}">${p.badge === 'off' ? p.off + ' OFF' : p.badge === 'hot' ? 'HOT' : 'NEW'}</span>
+      <button class="wish" aria-label="Add to wishlist"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.6-9.3-9A5.4 5.4 0 0 1 12 6.5 5.4 5.4 0 0 1 21.3 11c-2.3 4.4-9.3 9-9.3 9z"/></svg></button>
+    </div>
+    <div class="card-body">
+      <div class="brand">${p.brand}</div>
+      <div class="pname">${p.name}</div>
+      <div class="rating"><span class="stars">${starStr(p.rating)}</span> ${p.rating} (${p.reviews})</div>
+      <div class="price-row"><span class="price">${p.price}</span>${p.old ? `<span class="old">${p.old}</span>` : ''}</div>
+      <button class="add"><svg viewBox="0 0 24 24"><path d="M3 4h2l2.6 12.5a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5-1.2L21 8H6"/><circle cx="10" cy="21" r="1.4"/><circle cx="17" cy="21" r="1.4"/></svg>Add to Cart</button>
+    </div>
+  </div>`).join('');
+</script>
+</body>
+</html>
